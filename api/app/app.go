@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/deemount/kraken/api/config"
-	"github.com/deemount/kraken/config/driver"
+	"github.com/deemount/kraken/api/config/driver"
 )
 
 // App ...

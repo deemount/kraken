@@ -80,10 +80,11 @@ func Run() error {
 		},
 	}
 
-	server.App.Discogs = &config.Kraken{
+	server.App.Kraken = &config.Kraken{
 		URL:       os.Getenv("API_KRAKEN_URL"),
 		UserAgent: os.Getenv("API_KRAKEN_USERAGENT"),
-		Token:     os.Getenv("API_KRAKEN_TOKEN"),
+		Key:       os.Getenv("API_KRAKEN_KEY"),
+		Secret:    os.Getenv("API_KRAKEN_SECRET"),
 	}
 
 	server.App.Options = &config.Options{
