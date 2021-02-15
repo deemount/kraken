@@ -1,6 +1,6 @@
 # Kraken v1 RESTful API
 
-A RESTful API for Kraken v1 written in Go
+A RESTful API for Kraken v1 written in Go.
 
 ## Endpoints
 
