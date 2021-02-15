@@ -13,14 +13,20 @@ import (
 	"github.com/deemount/kraken/api/utils"
 )
 
+// KrakenResponse wraps the Kraken API JSON response
+type KrakenResponse struct {
+	Error  []string    `json:"error"`
+	Result interface{} `json:"result"`
+}
+
 // BalanceRepository represents the contract between
 type BalanceRepository interface {
-	FindBalanceByCurrency(values url.Values) (*models.Balance, error)
+	FindBalanceByCurrency(values url.Values) (interface{}, error)
 }
 
 // BalanceService is a struct
 type BalanceService struct {
-	version   string
+	version   int
 	url       string
 	uri       string
 	useragent string
@@ -30,8 +36,9 @@ type BalanceService struct {
 }
 
 // NewBalanceService is a object
-func NewBalanceService(url, uri, useragent, key, secret string) BalanceRepository {
+func NewBalanceService(version int, url, uri, useragent, key, secret string) BalanceRepository {
 	return &BalanceService{
+		version:   version,
 		url:       url,
 		uri:       uri,
 		useragent: useragent,
@@ -41,11 +48,11 @@ func NewBalanceService(url, uri, useragent, key, secret string) BalanceRepositor
 }
 
 // FindBalanceByCurrency is a method
-func (rs *BalanceService) FindBalanceByCurrency(values url.Values) (*models.Balance, error) {
+func (rs *BalanceService) FindBalanceByCurrency(values url.Values) (interface{}, error) {
 
 	var err error
 
-	path := fmt.Sprintf("%s/private/Balance", rs.version)
+	path := fmt.Sprintf("/%d/private/Balance", rs.version)
 	url := fmt.Sprintf("%s%s", rs.url, path)
 	secret, _ := base64.StdEncoding.DecodeString(rs.secret)
 
@@ -54,6 +61,8 @@ func (rs *BalanceService) FindBalanceByCurrency(values url.Values) (*models.Bala
 
 	// create signature
 	signature := utils.Signature(path, values, secret)
+
+	log.Printf("Signature: %s", signature)
 
 	// add token to request headers
 	headers := map[string]string{
@@ -65,10 +74,30 @@ func (rs *BalanceService) FindBalanceByCurrency(values url.Values) (*models.Bala
 
 	body, err := q.Send(url, values, headers)
 	if err != nil {
-		log.Print(err)
+		return nil, fmt.Errorf("Could not execute request! #3 (%s)", err.Error())
 	}
 
-	err = json.Unmarshal(body, &rs.balance)
-	return rs.balance, err
+	// Parse request
+	var jsonData KrakenResponse
+
+	typ := models.Balance{}
+
+	// Set the KrakenResponse.Result to typ so `json.Unmarshal` will
+	// unmarshal it into given type, instead of `interface{}`.
+	jsonData.Result = typ
+
+	err = json.Unmarshal(body, &jsonData.Result)
+	if err != nil {
+		return nil, fmt.Errorf("Could not execute request! #6 (%s)", err.Error())
+	}
+
+	// Check for Kraken API error
+	if len(jsonData.Error) > 0 {
+		return nil, fmt.Errorf("Could not execute request! #7 (%s)", jsonData.Error)
+	}
+
+	log.Printf("%+v", &jsonData)
+
+	return jsonData.Result, err
 
 }

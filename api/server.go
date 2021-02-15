@@ -87,17 +87,15 @@ func Run() error {
 		Secret:    os.Getenv("API_KRAKEN_SECRET"),
 	}
 
-	server.App.Options = &config.Options{
-		Currency: os.Getenv("API_KRAKEN_CURRENCY"),
-	}
-
 	// initialize orm idle and router
 	if err = server.Initialize(); err != nil {
 		return err
 	}
 
 	// run server
-	server.Run()
+	if err = server.Run(); err != nil {
+		return err
+	}
 
 	return nil
 

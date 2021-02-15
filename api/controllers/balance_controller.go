@@ -23,6 +23,7 @@ import (
 func (server *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	service := repositories.NewBalanceService(
+		server.App.API.Version,
 		server.App.Kraken.URL,
 		constants.BALANCEURI,
 		server.App.Kraken.UserAgent,
@@ -31,7 +32,8 @@ func (server *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	repository := repositories.BalanceRepository(service)
 
-	balance, err := repository.FindBalanceByCurrency(url.Values{})
+	values := url.Values{}
+	balance, err := repository.FindBalanceByCurrency(values)
 	if err != nil {
 		log.Print(err)
 	}
