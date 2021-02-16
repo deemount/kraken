@@ -1,8 +1,15 @@
 # Kraken v1 RESTful API
 
-A RESTful API for Kraken v1 written in Go.
+A RESTful API for Kraken v1 written in Go. This application is still under development.
 
 ## Endpoints
+
+***Notice***:
+There is actually only one endpoint defined
+
+### Global Methods
+
+* [SCHEME:HOST:PORT]/kraken/v1/home
 
 ### Private Methods
 
@@ -49,7 +56,7 @@ API_SWAGGER_PORT=""
 
 ### Build
 
-**Notice**:
+***Notice***:
 Using semantic versioning at the end, which is also tagged at github
 
 ```dockerfile
@@ -59,11 +66,12 @@ docker build -t deemount/kraken:v0.1.1 .
 ### Run
 
 ```dockerfile
-docker run --publish 8686:8686 --detach --name dcgs deemount/kraken:v0.1.1  
+docker run --publish 8686:8686 --detach --name krkn deemount/kraken:v0.1.1  
 ```
 
-### History
+## History
 
+* added first working request endpoint method for balance
 * create architecture, add functionalities, first setup
 * first upload & initial commit
 
