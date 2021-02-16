@@ -17,7 +17,7 @@ There is actually only one endpoint defined
 
 ## Environment
 
-You need to create a .en file in your root folder.
+You need to create a .env file in your root folder.
 
 ```shell
 API_KRAKEN_VERSION="0"
