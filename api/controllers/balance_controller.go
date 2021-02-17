@@ -3,7 +3,6 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"net/url"
 
 	"github.com/deemount/kraken/api/constants"
 	"github.com/deemount/kraken/api/repositories"
@@ -19,7 +18,7 @@ import (
 // @Success 200 {object} models.Balance
 // @Header 200 {string} Token "ok"
 // @Failure 404 {object} http.
-// @Router /artists/ [get]
+// @Router /balance [get]
 func (server *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	service := repositories.NewBalanceService(
@@ -32,8 +31,7 @@ func (server *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	repository := repositories.BalanceRepository(service)
 
-	values := url.Values{}
-	balance, err := repository.FindBalanceByCurrency(values)
+	balance, err := repository.GetBalance()
 	if err != nil {
 		log.Print(err)
 	}

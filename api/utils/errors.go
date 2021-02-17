@@ -11,7 +11,7 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	return fmt.Sprintf("discogs error: %s", strings.ToLower(e.Message))
+	return fmt.Sprintf("kraken error: %s", strings.ToLower(e.Message))
 }
 
 // APIErrors
@@ -21,4 +21,7 @@ var (
 	ErrCurrencyNotSupported = &Error{"currency does not supported"}
 	ErrUserAgentInvalid     = &Error{"invalid user-agent"}
 	ErrNotFound             = &Error{"not found"}
+	ErrParseMimeType        = &Error{"parsing mime type"}
+	ErrRespMimeType         = &Error{"response content-type must be 'application/json'"}
+	ErrCreateObject         = &Error{"create request object not possible"}
 )

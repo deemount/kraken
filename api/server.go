@@ -93,9 +93,7 @@ func Run() error {
 	}
 
 	// run server
-	if err = server.Run(); err != nil {
-		return err
-	}
+	server.Run()
 
 	return nil
 

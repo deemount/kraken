@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -69,13 +72,15 @@ func (server *Server) Initialize() error {
 
 }
 
-// Run calls listen-and-serve and implements logging handler
+// Run calls listen-and-serve and implements tracing and logging handler
 // @Summary Runs the listener on tcp and serves handler for incoming connections
 // @Description run listen and serve on given port
 // @ID run-listen-and-serve-on-give-port
-func (server *Server) Run() error {
+func (server *Server) Run() {
 
 	var err error
+
+	ctx, cancel := context.WithCancel(context.Background())
 
 	logger := log.New(os.Stdout, "http: ", log.LstdFlags)
 	logger.Println("Server is starting...")
@@ -90,17 +95,53 @@ func (server *Server) Run() error {
 		Addr:         ":" + server.App.API.Port,
 		Handler:      tracing(nextRequestID)(logging(logger)(server.App.Router)), //handlers.LoggingHandler(os.Stdout, server.App.Router)
 		ErrorLog:     logger,
+		BaseContext:  func(_ net.Listener) context.Context { return ctx },
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  15 * time.Second,
 	}
 
-	err = srv.ListenAndServe()
-	if err != nil {
-		return err
+	// Run server
+	go func() {
+		if err = srv.ListenAndServe(); err != http.ErrServerClosed {
+			log.Fatalf("listen and serve: %v", err)
+		}
+	}()
+
+	signalChan := make(chan os.Signal, 1)
+
+	signal.Notify(
+		signalChan,
+		syscall.SIGHUP,  // kill -SIGHUP XXXX
+		syscall.SIGINT,  // kill -SIGINT XXXX or Ctrl+c
+		syscall.SIGQUIT, // kill -SIGQUIT XXXX
+	)
+
+	<-signalChan
+	log.Print("os.Interrupt - shutting down...\n")
+
+	go func() {
+		<-signalChan
+		log.Fatal("os.Kill - terminating...\n")
+	}()
+
+	gracefullCtx, cancelShutdown := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelShutdown()
+
+	if err := srv.Shutdown(gracefullCtx); err != nil {
+		log.Printf("shutdown error: %v\n", err)
+		defer os.Exit(1)
+
+	} else {
+		log.Printf("gracefully stopped\n")
 	}
 
-	return nil
+	// manually cancel context if not using httpServer.RegisterOnShutdown(cancel)
+	cancel()
+
+	defer os.Exit(0)
+
+	return
 
 }
 

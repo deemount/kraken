@@ -1,11 +1,16 @@
 # Kraken v1 RESTful API
 
-A RESTful API for Kraken v1 written in Go. This application is still under development.
+A RESTful API for Kraken v1 written in Go. 
+
+**Information:**
+To use this application, you'll need a account at https://kraken.com. After creating a account, you'll also in need of a api-key and api-secret to connect successfully to the kraken api.
+
+***Notice***: This application is still under development.
 
 ## Endpoints
 
 ***Notice***:
-There is actually only one endpoint defined
+There are actually two endpoints defined
 
 ### Global Methods
 
@@ -81,3 +86,7 @@ docker run --publish 8686:8686 --detach --name krkn deemount/kraken:v0.1.1
 * database connection
 * more methods & functionality
 * more documentation
+
+### More
+
+* API Documentation https://www.kraken.com/features/api

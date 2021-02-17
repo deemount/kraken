@@ -12,26 +12,26 @@ import (
 	"github.com/deemount/kraken/api/utils"
 )
 
-// BalanceRepository represents the contract between
-type BalanceRepository interface {
-	GetBalance() (interface{}, error)
+// TradeBalanceRepository represents the contract between
+type TradeBalanceRepository interface {
+	GetTradeBalance(args map[string]string) (interface{}, error)
 }
 
-// BalanceService is a struct
-type BalanceService struct {
-	version   int
-	url       string
-	uri       string
-	useragent string
-	key       string
-	secret    string
-	balance   *models.Balance
-	response  *models.Response
+// TradeBalanceService is a struct
+type TradeBalanceService struct {
+	version      int
+	url          string
+	uri          string
+	useragent    string
+	key          string
+	secret       string
+	tradebalance *models.TradeBalance
+	response     *models.Response
 }
 
-// NewBalanceService is a object
-func NewBalanceService(version int, url, uri, useragent, key, secret string) BalanceRepository {
-	return &BalanceService{
+// NewTradeBalanceService is a object
+func NewTradeBalanceService(version int, url, uri, useragent, key, secret string) TradeBalanceRepository {
+	return &TradeBalanceService{
 		version:   version,
 		url:       url,
 		uri:       uri,
@@ -41,13 +41,20 @@ func NewBalanceService(version int, url, uri, useragent, key, secret string) Bal
 	}
 }
 
-// GetBalance is a method
-func (rs *BalanceService) GetBalance() (interface{}, error) {
+// GetTradeBalance returns trade balance info
+func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interface{}, error) {
 
 	var err error
-	var values url.Values
 
-	path := fmt.Sprintf("/%d/private/Balance", rs.version)
+	values := url.Values{}
+	if value, ok := args["aclass"]; ok {
+		values.Add("aclass", value)
+	}
+	if value, ok := args["asset"]; ok {
+		values.Add("asset", value)
+	}
+
+	path := fmt.Sprintf("/%d/private/TradeBalance", rs.version)
 	url := fmt.Sprintf("%s%s", rs.url, path)
 	secret, _ := base64.StdEncoding.DecodeString(rs.secret)
 

@@ -2,10 +2,12 @@ package requests
 
 import (
 	"io/ioutil"
-	"log"
+	"mime"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/deemount/kraken/api/utils"
 )
 
 // HTTPClient is a struct
@@ -18,22 +20,19 @@ func (c *HTTPClient) Send(url string, params url.Values, headers map[string]stri
 
 	var err error
 
-	log.Printf("send request uri: \n%v\n%v", url, strings.NewReader(params.Encode()))
-
 	// initialize request
 	req, err := http.NewRequest("POST", url, strings.NewReader(params.Encode()))
 	if err != nil {
-		log.Fatal("Error on creating request object. ", err.Error())
+		return []byte("0"), utils.ErrCreateObject
 	}
 
+	// add useragent
 	req.Header.Add("User-Agent", "GoKrakenBot/1.0")
 
 	// add headers
 	for key, value := range headers {
 		req.Header.Add(key, value)
 	}
-
-	log.Printf("%+v", req)
 
 	// execute request
 	resp, err := c.client.Do(req)
@@ -42,30 +41,28 @@ func (c *HTTPClient) Send(url string, params url.Values, headers map[string]stri
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-
 	// check response status
-	// if resp.StatusCode != http.StatusOK {
-	// 	switch resp.StatusCode {
-	// 	case http.StatusUnauthorized:
-	// 		return []byte("0"), utils.ErrUnauthorized
-	// 	case http.StatusNotFound:
-	// 		return []byte("0"), utils.ErrNotFound
-	// 	default:
-	// 		return []byte("0"), utils.ErrDefaultResponse // resp.Status
-	// 	}
-	// }
+	if resp.StatusCode != http.StatusOK {
+		switch resp.StatusCode {
+		case http.StatusUnauthorized:
+			return []byte("0"), utils.ErrUnauthorized
+		case http.StatusNotFound:
+			return []byte("0"), utils.ErrNotFound
+		default:
+			return []byte("0"), utils.ErrDefaultResponse
+		}
+	}
 
 	// check response mime type
-	// mimeType, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
-	// if err != nil {
-	// 	log.Fatal("Error on parsing mime type. ", err.Error())
-	// }
-	// if mimeType != "application/json" {
-	// 	log.Fatalf("Error on mime type. Response Content-Type is '%s', but should be 'application/json'.", mimeType)
-	// }
+	mimeType, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+	if err != nil {
+		return []byte("0"), utils.ErrParseMimeType
+	}
+	if mimeType != "application/json" {
+		return []byte("0"), utils.ErrRespMimeType
+	}
 
 	// return response body
-	return body, err
+	return ioutil.ReadAll(resp.Body)
 
 }

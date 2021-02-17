@@ -9,4 +9,6 @@ const (
 	HOMEURI = "/home"
 	// SWAGGERURI is a constant
 	SWAGGERURI = "/swagger/"
+	// TRADEBALANCEURI is a constant
+	TRADEBALANCEURI = "/tradebalance"
 )

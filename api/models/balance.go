@@ -12,6 +12,36 @@ package models
 
 // Balance ...
 type Balance struct {
+	ADA  float64 `json:"ADA,string"`
+	AAVE float64 `json:"AAVE,string"`
+	BCH  float64 `json:"BCH,string"`
+	DASH float64 `json:"DASH,string"`
+	EOS  float64 `json:"EOS,string"`
+	GNO  float64 `json:"GNO,string"`
+	QTUM float64 `json:"QTUM,string"`
+	KFEE float64 `json:"KFEE,string"`
+	USDT float64 `json:"USDT,string"`
+	XDAO float64 `json:"XDAO,string"`
+	XETC float64 `json:"XETC,string"`
 	XETH float64 `json:"XETH,string"`
+	XICN float64 `json:"XICN,string"`
+	XLTC float64 `json:"XLTC,string"`
+	XMLN float64 `json:"XMLN,string"`
+	XNMC float64 `json:"XNMC,string"`
+	XREP float64 `json:"XREP,string"`
+	XXBT float64 `json:"XXBT,string"`
+	XXDG float64 `json:"XXDG,string"`
+	XXLM float64 `json:"XXLM,string"`
+	XXMR float64 `json:"XXMR,string"`
+	XXRP float64 `json:"XXRP,string"`
+	XTZ  float64 `json:"XTZ,string"`
+	XXVN float64 `json:"XXVN,string"`
+	XZEC float64 `json:"XZEC,string"`
+	ZCAD float64 `json:"ZCAD,string"`
 	ZEUR float64 `json:"ZEUR,string"`
+	ZGBP float64 `json:"ZGBP,string"`
+	ZJPY float64 `json:"ZJPY,string"`
+	ZKRW float64 `json:"ZKRW,string"`
+	ZUSD float64 `json:"ZUSD,string"`
+	TRX  float64 `json:"TRX,string"`
 }
