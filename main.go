@@ -6,8 +6,8 @@ import (
 	"github.com/deemount/kraken/api"
 )
 
-// @title Kraken REST API
-// @version 0.1.0
+// @title Kraken RESTful API
+// @version 0.1.3
 // @description Fetches data from Kraken.com and stores it in database
 // @termsOfService https://github.com/deemount/kraken/terms/index.html
 
@@ -27,7 +27,7 @@ func main() {
 
 	// run application interface
 	if err = api.Run(); err != nil {
-		log.Fatalf("Kraken REST API Error %s", err)
+		log.Fatalf("Kraken RESTful API Error %s", err)
 	}
 
 }
