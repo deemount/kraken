@@ -1,6 +1,6 @@
 # Kraken v1 RESTful API
 
-A RESTful API for Kraken v1 written in Go. 
+A RESTful API for Kraken v1 written in Go.
 
 **Information:**
 To use this application, you'll need a account at https://kraken.com. After creating a account, you'll also in need of a api-key and api-secret to connect successfully to the kraken api.
@@ -10,7 +10,7 @@ To use this application, you'll need a account at https://kraken.com. After crea
 ## Endpoints
 
 ***Notice***:
-There are actually two endpoints defined
+There are actually four endpoints defined
 
 ### Global Methods
 
@@ -19,6 +19,8 @@ There are actually two endpoints defined
 ### Private Methods
 
 * [SCHEME:HOST:PORT]/kraken/v1/balance
+* [SCHEME:HOST:PORT]/kraken/v1/tradebalance
+* [SCHEME:HOST:PORT]/kraken/v1/ledger
 
 ## Environment
 
