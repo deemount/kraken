@@ -15,6 +15,7 @@ func (server *Server) initializeRoutes() error {
 	home := constants.HOMEURI
 	balance := constants.BALANCEURI
 	tradeBalance := constants.TRADEBALANCEURI
+	ledger := constants.LEDGERURI
 
 	//**************** Home Route
 
@@ -31,8 +32,18 @@ func (server *Server) initializeRoutes() error {
 		return err
 	}
 
+	//**************** TradeBalance Routes
+
 	// single request
 	err = server.App.V1.HandleFunc(tradeBalance, server.GetTradeBalance).Methods(http.MethodGet).GetError()
+	if err != nil {
+		return err
+	}
+
+	//**************** Ledger Routes
+
+	// single request
+	err = server.App.V1.HandleFunc(ledger, server.GetLedger).Methods(http.MethodGet).GetError()
 	if err != nil {
 		return err
 	}

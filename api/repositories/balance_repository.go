@@ -26,7 +26,7 @@ type BalanceService struct {
 	key       string
 	secret    string
 	balance   *models.Balance
-	response  *models.Response
+	response  models.Response
 }
 
 // NewBalanceService is a object
@@ -45,7 +45,8 @@ func NewBalanceService(version int, url, uri, useragent, key, secret string) Bal
 func (rs *BalanceService) GetBalance() (interface{}, error) {
 
 	var err error
-	var values url.Values
+
+	values := url.Values{}
 
 	path := fmt.Sprintf("/%d/private/Balance", rs.version)
 	url := fmt.Sprintf("%s%s", rs.url, path)
@@ -71,9 +72,9 @@ func (rs *BalanceService) GetBalance() (interface{}, error) {
 	}
 
 	// parse request
-	data := rs.response
+	data := rs.response //rs.balance
 
-	err = json.Unmarshal(body, &data)
+	err = json.Unmarshal(body, &data.Result)
 	if err != nil {
 		return nil, fmt.Errorf("Could not execute request! #6 (%s)", err.Error())
 	}

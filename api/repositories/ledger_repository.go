@@ -12,26 +12,26 @@ import (
 	"github.com/deemount/kraken/api/utils"
 )
 
-// TradeBalanceRepository represents the contract between
-type TradeBalanceRepository interface {
-	GetTradeBalance(args map[string]string) (interface{}, error)
+// LedgerRepository represents the contract between
+type LedgerRepository interface {
+	GetLedger(args map[string]string) (interface{}, error)
 }
 
-// TradeBalanceService is a struct
-type TradeBalanceService struct {
-	version      int
-	url          string
-	uri          string
-	useragent    string
-	key          string
-	secret       string
-	tradebalance *models.TradeBalance
-	response     *models.Response
+// LedgerService is a struct
+type LedgerService struct {
+	version   int
+	url       string
+	uri       string
+	useragent string
+	key       string
+	secret    string
+	ledger    *models.LedgerResponse
+	response  models.Response
 }
 
-// NewTradeBalanceService is a object
-func NewTradeBalanceService(version int, url, uri, useragent, key, secret string) TradeBalanceRepository {
-	return &TradeBalanceService{
+// NewLedgerService is a object
+func NewLedgerService(version int, url, uri, useragent, key, secret string) LedgerRepository {
+	return &LedgerService{
 		version:   version,
 		url:       url,
 		uri:       uri,
@@ -41,20 +41,33 @@ func NewTradeBalanceService(version int, url, uri, useragent, key, secret string
 	}
 }
 
-// GetTradeBalance returns trade balance info
-func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interface{}, error) {
+// GetLedger is a method
+func (rs *LedgerService) GetLedger(args map[string]string) (interface{}, error) {
 
 	var err error
 
 	values := url.Values{}
+
 	if value, ok := args["aclass"]; ok {
 		values.Add("aclass", value)
 	}
 	if value, ok := args["asset"]; ok {
 		values.Add("asset", value)
 	}
+	if value, ok := args["type"]; ok {
+		values.Add("type", value)
+	}
+	if value, ok := args["start"]; ok {
+		values.Add("start", value)
+	}
+	if value, ok := args["end"]; ok {
+		values.Add("end", value)
+	}
+	if value, ok := args["ofs"]; ok {
+		values.Add("ofs", value)
+	}
 
-	path := fmt.Sprintf("/%d/private/TradeBalance", rs.version)
+	path := fmt.Sprintf("/%d/private/Ledgers", rs.version)
 	url := fmt.Sprintf("%s%s", rs.url, path)
 	secret, _ := base64.StdEncoding.DecodeString(rs.secret)
 
@@ -78,9 +91,9 @@ func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interfac
 	}
 
 	// parse request
-	data := rs.response //rs.tradebalance
+	data := rs.response //rs.ledger
 
-	err = json.Unmarshal(body, &data)
+	err = json.Unmarshal(body, &data.Result)
 	if err != nil {
 		return nil, fmt.Errorf("Could not execute request! #6 (%s)", err.Error())
 	}
