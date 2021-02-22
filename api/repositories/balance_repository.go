@@ -25,8 +25,8 @@ type BalanceService struct {
 	useragent string
 	key       string
 	secret    string
-	balance   *models.Balance
-	response  models.Response
+	//balance   *models.Balance
+	response models.Response
 }
 
 // NewBalanceService is a object
@@ -68,7 +68,7 @@ func (rs *BalanceService) GetBalance() (interface{}, error) {
 
 	body, err := q.Send(url, values, headers)
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! #3 (%s)", err.Error())
+		return nil, err
 	}
 
 	// parse request
@@ -76,12 +76,12 @@ func (rs *BalanceService) GetBalance() (interface{}, error) {
 
 	err = json.Unmarshal(body, &data.Result)
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! #6 (%s)", err.Error())
+		return nil, err
 	}
 
 	// check for kraken api error
 	if len(data.Error) > 0 {
-		return nil, fmt.Errorf("Could not execute request! #7 (%s)", data.Error)
+		return nil, fmt.Errorf("%s", data.Error)
 	}
 
 	return data.Result, err

@@ -19,14 +19,14 @@ type TradeBalanceRepository interface {
 
 // TradeBalanceService is a struct
 type TradeBalanceService struct {
-	version      int
-	url          string
-	uri          string
-	useragent    string
-	key          string
-	secret       string
-	tradebalance *models.TradeBalance
-	response     *models.Response
+	version   int
+	url       string
+	uri       string
+	useragent string
+	key       string
+	secret    string
+	//tradebalance *models.TradeBalance
+	response models.Response
 }
 
 // NewTradeBalanceService is a object
@@ -74,20 +74,20 @@ func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interfac
 
 	body, err := q.Send(url, values, headers)
 	if err != nil {
-		return nil, fmt.Errorf("could not execute request! #3 (%s)", err.Error())
+		return nil, err
 	}
 
 	// parse request
 	data := rs.response //rs.tradebalance
 
-	err = json.Unmarshal(body, &data)
+	err = json.Unmarshal(body, &data.Result)
 	if err != nil {
-		return nil, fmt.Errorf("could not execute request! #6 (%s)", err.Error())
+		return nil, err
 	}
 
 	// check for kraken api error
 	if len(data.Error) > 0 {
-		return nil, fmt.Errorf("could not execute request! #7 (%s)", data.Error)
+		return nil, fmt.Errorf("%s", data.Error)
 	}
 
 	return data.Result, err
