@@ -1,5 +1,6 @@
 package constants
 
+// defines uri as constants
 const (
 	// BALANCEURI is a constant
 	BALANCEURI = "/balance"

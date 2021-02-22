@@ -10,8 +10,9 @@ type Error struct {
 	Message string
 }
 
+// Error is a method
 func (e *Error) Error() string {
-	return fmt.Sprintf("kraken error: %s", strings.ToLower(e.Message))
+	return fmt.Sprintf("%s", strings.ToLower(e.Message))
 }
 
 // APIErrors

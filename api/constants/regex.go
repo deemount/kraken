@@ -1,5 +1,6 @@
 package constants
 
+// defines regular expressions
 const (
 
 	// IDREGEX defines query string

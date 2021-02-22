@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -27,7 +26,7 @@ func Run() error {
 	// Put in comments when in production mode
 	err = godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error %v", err)
+		return err
 	}
 
 	//

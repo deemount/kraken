@@ -27,7 +27,7 @@ func main() {
 
 	// run application interface
 	if err = api.Run(); err != nil {
-		log.Fatalf("Kraken RESTful API Error %s", err)
+		log.Fatalf("kraken api error %s", err)
 	}
 
 }
