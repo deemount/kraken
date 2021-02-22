@@ -85,7 +85,7 @@ func (server *Server) Run() {
 	logger.Println("kraken api is starting...")
 
 	nextRequestID := func() string {
-		return fmt.Sprintf("%d", time.Now().UnixNano())
+		fmt.Sprintf("%d", time.Now().UnixNano())
 	}
 
 	go log.Printf("kraken api v%d is ready to listen and serve on port %s", server.App.API.Version, server.App.API.Port)
