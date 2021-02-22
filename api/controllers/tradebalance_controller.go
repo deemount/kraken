@@ -38,7 +38,7 @@ func (server *Server) GetTradeBalance(w http.ResponseWriter, r *http.Request) {
 
 	tradeBalance, err := repository.GetTradeBalance(args)
 	if err != nil {
-		log.Print(err)
+		log.Fatalf("controller: %s", err)
 	}
 
 	responses.JSON(w, http.StatusOK, tradeBalance)

@@ -8,21 +8,19 @@ import (
 )
 
 func KrakenTestServer(w http.ResponseWriter, r *http.Request) {
+
 	method := strings.TrimPrefix(r.URL.Path, "/0/private/")
 
 	if method == "Ledger" {
 		fmt.Fprint(w, "{30}")
-		return
 	}
 
 	if method == "Balance" {
 		fmt.Fprint(w, "{20}")
-		return
 	}
 
 	if method == "TradeBalance" {
 		fmt.Fprint(w, "{10}")
-		return
 	}
 
 }

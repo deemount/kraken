@@ -74,7 +74,7 @@ func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interfac
 
 	body, err := q.Send(url, values, headers)
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! #3 (%s)", err.Error())
+		return nil, fmt.Errorf("could not execute request! #3 (%s)", err.Error())
 	}
 
 	// parse request
@@ -82,12 +82,12 @@ func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interfac
 
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		return nil, fmt.Errorf("Could not execute request! #6 (%s)", err.Error())
+		return nil, fmt.Errorf("could not execute request! #6 (%s)", err.Error())
 	}
 
 	// check for kraken api error
 	if len(data.Error) > 0 {
-		return nil, fmt.Errorf("Could not execute request! #7 (%s)", data.Error)
+		return nil, fmt.Errorf("could not execute request! #7 (%s)", data.Error)
 	}
 
 	return data.Result, err

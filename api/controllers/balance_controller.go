@@ -31,11 +31,11 @@ func (server *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	repository := repositories.BalanceRepository(service)
 
-	balance, err := repository.GetBalance()
+	result, err := repository.GetBalance()
 	if err != nil {
-		log.Print(err)
+		log.Fatalf("controller: %s", err)
 	}
 
-	responses.JSON(w, http.StatusOK, balance)
+	responses.JSON(w, http.StatusOK, result)
 
 }

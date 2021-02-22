@@ -42,7 +42,7 @@ func (server *Server) GetLedger(w http.ResponseWriter, r *http.Request) {
 
 	ledger, err := repository.GetLedger(args)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("controller: %s", err)
 	}
 
 	responses.JSON(w, http.StatusOK, ledger)
