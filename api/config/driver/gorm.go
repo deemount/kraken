@@ -42,7 +42,6 @@ func (db *DataService) Connect() (*DataService, error) {
 		}), db.config())
 
 	db.migrate()
-
 	return db, err
 
 }

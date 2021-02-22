@@ -24,12 +24,6 @@ type Server struct {
 	App app.App
 }
 
-type key int
-
-const (
-	requestIDKey key = 0
-)
-
 // Initialize is a method
 // @Summary init db connection and set router
 // @Description initialize database connection and set multiplexer router
@@ -83,17 +77,17 @@ func (server *Server) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	logger := log.New(os.Stdout, "http: ", log.LstdFlags)
-	logger.Println("Server is starting...")
+	logger.Println("kraken api is starting...")
 
 	nextRequestID := func() string {
 		return fmt.Sprintf("%d", time.Now().UnixNano())
 	}
 
-	go log.Printf("Kraken API v%d is ready to listen and serve on port %s", server.App.API.Version, server.App.API.Port)
+	go log.Printf("kraken api v%d is ready to listen and serve on port %s", server.App.API.Version, server.App.API.Port)
 
 	srv := &http.Server{
 		Addr:         ":" + server.App.API.Port,
-		Handler:      tracing(nextRequestID)(logging(logger)(server.App.Router)), //handlers.LoggingHandler(os.Stdout, server.App.Router)
+		Handler:      middlewares.Tracing(nextRequestID)(middlewares.Logging(logger)(middlewares.Limit(server.App.Router))), //handlers.LoggingHandler(os.Stdout, server.App.Router)
 		ErrorLog:     logger,
 		BaseContext:  func(_ net.Listener) context.Context { return ctx },
 		ReadTimeout:  5 * time.Second,
@@ -129,47 +123,16 @@ func (server *Server) Run() {
 	defer cancelShutdown()
 
 	if err := srv.Shutdown(gracefullCtx); err != nil {
-		log.Printf("shutdown error: %v\n", err)
+		log.Printf("kraken api has a shutdown error: %v\n", err)
 		defer os.Exit(1)
 
 	} else {
-		log.Printf("gracefully stopped\n")
+		log.Printf("kraken api is gracefully stopped\n")
 	}
 
 	// manually cancel context if not using httpServer.RegisterOnShutdown(cancel)
 	cancel()
-
 	defer os.Exit(0)
-
 	return
 
-}
-
-func logging(logger *log.Logger) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			defer func() {
-				requestID, ok := r.Context().Value(requestIDKey).(string)
-				if !ok {
-					requestID = "unknown"
-				}
-				logger.Println(requestID, r.Method, r.URL.Path, r.RemoteAddr, r.UserAgent())
-			}()
-			next.ServeHTTP(w, r)
-		})
-	}
-}
-
-func tracing(nextRequestID func() string) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			requestID := r.Header.Get("X-Request-Id")
-			if requestID == "" {
-				requestID = nextRequestID()
-			}
-			ctx := context.WithValue(r.Context(), requestIDKey, requestID)
-			w.Header().Set("X-Request-Id", requestID)
-			next.ServeHTTP(w, r.WithContext(ctx))
-		})
-	}
 }

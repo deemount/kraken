@@ -59,6 +59,14 @@ API_SWAGGER_PORT=""
 
 ```
 
+## Dependencies
+
+This API makes intensive use of foreign packages. See the packages listed below:
+
+* HTTP Router <https://github.com/gorilla/mux>
+* API Testing <https://github.com/swaggo/http-swagger>
+* GORM <https://gorm.io/gorm>
+
 ## Docker
 
 ### Build
