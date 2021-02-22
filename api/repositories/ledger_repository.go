@@ -47,7 +47,7 @@ func NewLedgerService(version int, url, uri, useragent, key, secret string) Ledg
 }
 
 // GetLedger is a method
-func (rs *LedgerService) GetLedger(args map[string]string) (interface{}, error) {
+func (rs LedgerService) GetLedger(args map[string]string) (interface{}, error) {
 
 	var err error
 

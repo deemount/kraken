@@ -47,7 +47,7 @@ func NewTradeBalanceService(version int, url, uri, useragent, key, secret string
 }
 
 // GetTradeBalance returns trade balance info
-func (rs *TradeBalanceService) GetTradeBalance(args map[string]string) (interface{}, error) {
+func (rs TradeBalanceService) GetTradeBalance(args map[string]string) (interface{}, error) {
 
 	var err error
 

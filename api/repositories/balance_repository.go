@@ -47,7 +47,7 @@ func NewBalanceService(version int, url, uri, useragent, key, secret string) Bal
 }
 
 // GetBalance is a method
-func (rs *BalanceService) GetBalance() (interface{}, error) {
+func (rs BalanceService) GetBalance() (interface{}, error) {
 
 	var err error
 
