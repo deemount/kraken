@@ -40,7 +40,7 @@ func Run() error {
 	singularTable, _ := strconv.ParseBool(os.Getenv("API_DB_SINGULARTABLE"))
 	logMode, _ := strconv.ParseBool(os.Getenv("API_DB_LOGMODE"))
 
-	server.App.DB.Config = &config.DB{
+	server.App.DB.Config = config.DB{
 		Driver:        os.Getenv("API_DB_DRIVER"),
 		User:          os.Getenv("API_DB_USER"),
 		PW:            os.Getenv("API_DB_PASSWORD"),
@@ -54,7 +54,7 @@ func Run() error {
 		LogMode:       logMode,
 	}
 
-	server.App.API = &config.API{
+	server.App.API = config.API{
 		Version:     version,
 		Host:        os.Getenv("API_SERVER_HOST"),
 		Path:        os.Getenv("API_SERVER_PATH_PREFIX"),
@@ -63,7 +63,7 @@ func Run() error {
 		LimitClient: limitClient,
 	}
 
-	server.App.Swagger = &config.Swagger{
+	server.App.Swagger = config.Swagger{
 		Host: os.Getenv("API_SWAGGER_HOST"),
 		Port: os.Getenv("API_SWAGGER_PORT"),
 	}
@@ -84,7 +84,7 @@ func Run() error {
 		},
 	}
 
-	server.App.Kraken = &config.Kraken{
+	server.App.Kraken = config.Kraken{
 		URL:       os.Getenv("API_KRAKEN_URL"),
 		UserAgent: os.Getenv("API_KRAKEN_USERAGENT"),
 		Key:       os.Getenv("API_KRAKEN_KEY"),

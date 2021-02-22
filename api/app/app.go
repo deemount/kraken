@@ -19,10 +19,10 @@ type App struct {
 	Routes config.Routes
 
 	// pointer
-	API     *config.API
-	Kraken  *config.Kraken
-	Options *config.Options
-	Swagger *config.Swagger
+	API     config.API
+	Kraken  config.Kraken
+	Options config.Options
+	Swagger config.Swagger
 
 	// legal
 	Router *mux.Router

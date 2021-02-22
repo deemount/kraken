@@ -22,14 +22,14 @@ type DataServiceRepository interface {
 
 // DataService is a struct
 type DataService struct {
-	Config *config.DB
+	Config config.DB
 	ORM    *gorm.DB
 }
 
 // NewDataService is a constructor
 func NewDataService(config config.DB) DataServiceRepository {
 	return &DataService{
-		Config: &config,
+		Config: config,
 	}
 }
 
