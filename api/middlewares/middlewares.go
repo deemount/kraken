@@ -8,18 +8,20 @@ import (
 	"golang.org/x/time/rate"
 )
 
+// key is a integer type
 type key int
 
+// requestIDKey is a private constant
 const requestIDKey key = 0
 
+// limiter is a private var
 var limiter = rate.NewLimiter(1, 3)
 
 // Limit ...
 func Limit(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if limiter.Allow() == false {
-			http.Error(w, http.StatusText(429), http.StatusTooManyRequests)
-			return
+		if !limiter.Allow() {
+			http.Error(w, http.StatusText(http.StatusTooManyRequests), http.StatusTooManyRequests)
 		}
 		next.ServeHTTP(w, r)
 	})

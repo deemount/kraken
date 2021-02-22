@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// TestSignature is testing signature
 func TestSignature(t *testing.T) {
 
 	values := url.Values{}
