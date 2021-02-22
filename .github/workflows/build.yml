@@ -7,14 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      #
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
-
       # 
       - name: Set up Go 1.15
         uses: actions/setup-go@v2
@@ -39,3 +31,13 @@ jobs:
         env:
           GOPROXY: "https://proxy.golang.org"
         run: go test -v .
+
+      - name: build and test
+        run: |
+          go test -timeout=60s -race
+          go build -race
+      - name: install golangci-lint
+        run: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $GITHUB_WORKSPACE v1.26.0
+
+      - name: run golangci-lint
+        run: $GITHUB_WORKSPACE/golangci-lint run --out-format=github-actions

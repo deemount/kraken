@@ -98,7 +98,7 @@ func (server *Server) Run() {
 	// Run server
 	go func() {
 		if err = srv.ListenAndServe(); err != http.ErrServerClosed {
-			log.Fatalf("listen and serve: %v", err)
+			logger.Fatalf("could not listen and serve on %s: %v", server.App.API.Port, err)
 		}
 	}()
 
@@ -125,7 +125,6 @@ func (server *Server) Run() {
 	if err := srv.Shutdown(gracefullCtx); err != nil {
 		log.Printf("kraken api has a shutdown error: %v\n", err)
 		defer os.Exit(1)
-
 	} else {
 		log.Printf("kraken api is gracefully stopped\n")
 	}
