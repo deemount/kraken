@@ -37,4 +37,4 @@ jobs:
         run: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $GITHUB_WORKSPACE v1.26.0
 
       - name: run golangci-lint
-        run: $GITHUB_WORKSPACE/golangci-lint run --out-format=github-actions --print-issued-lines
+        run: $GITHUB_WORKSPACE/golangci-lint run --print-issued-lines --out-format=github-actions 

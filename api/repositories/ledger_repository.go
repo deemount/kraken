@@ -30,7 +30,7 @@ type LedgerService struct {
 	useragent string
 	key       string
 	secret    string
-	//ledger    *models.LedgerResponse
+	// ledger    *models.LedgerResponse
 	response models.Response
 }
 
@@ -96,7 +96,7 @@ func (rs LedgerService) GetLedger(args map[string]string) (interface{}, error) {
 	}
 
 	// parse request
-	data := rs.response //rs.ledger
+	data := rs.response // rs.ledger
 
 	err = json.Unmarshal(body, &data.Result)
 	if err != nil {

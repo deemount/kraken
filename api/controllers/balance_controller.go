@@ -34,13 +34,10 @@ func (server *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 		server.App.Kraken.Key,
 		server.App.Kraken.Secret)
 
-	repository := repositories.BalanceRepository(service)
-
-	result, err := repository.GetBalance()
+	result, err := service.GetBalance()
 	if err != nil {
-		log.Fatalf("controller: %s", err)
+		log.Fatalf("balance controller: %s", err)
 	}
-
 	responses.JSON(w, http.StatusOK, result)
 
 }

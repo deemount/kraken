@@ -34,16 +34,14 @@ func (server *Server) GetTradeBalance(w http.ResponseWriter, r *http.Request) {
 		server.App.Kraken.Key,
 		server.App.Kraken.Secret)
 
-	repository := repositories.TradeBalanceRepository(service)
-
 	args := map[string]string{
 		"aclass": "currency",
 		"asset":  "XETH",
 	}
 
-	tradeBalance, err := repository.GetTradeBalance(args)
+	tradeBalance, err := service.GetTradeBalance(args)
 	if err != nil {
-		log.Fatalf("controller: %s", err)
+		log.Fatalf("tradebalance controller: %s", err)
 	}
 
 	responses.JSON(w, http.StatusOK, tradeBalance)

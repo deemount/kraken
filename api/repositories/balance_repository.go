@@ -30,7 +30,7 @@ type BalanceService struct {
 	useragent string
 	key       string
 	secret    string
-	//balance   *models.Balance
+	// balance   *models.Balance
 	response models.Response
 }
 
@@ -77,7 +77,7 @@ func (rs BalanceService) GetBalance() (interface{}, error) {
 	}
 
 	// parse request
-	data := rs.response //rs.balance
+	data := rs.response // rs.balance
 
 	err = json.Unmarshal(body, &data.Result)
 	if err != nil {

@@ -34,8 +34,6 @@ func (server *Server) GetLedger(w http.ResponseWriter, r *http.Request) {
 		server.App.Kraken.Key,
 		server.App.Kraken.Secret)
 
-	repository := repositories.LedgerRepository(service)
-
 	args := map[string]string{
 		"aclass": "currency",
 		"asset":  "all",
@@ -45,9 +43,9 @@ func (server *Server) GetLedger(w http.ResponseWriter, r *http.Request) {
 		"ofs":    "",
 	}
 
-	ledger, err := repository.GetLedger(args)
+	ledger, err := service.GetLedger(args)
 	if err != nil {
-		log.Fatalf("controller: %s", err)
+		log.Fatalf("ledger controller: %s", err)
 	}
 
 	responses.JSON(w, http.StatusOK, ledger)

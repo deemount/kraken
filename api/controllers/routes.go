@@ -16,32 +16,21 @@ func (server *Server) initializeRoutes() error {
 
 	var err error
 
-	//**************** Home Route
-
 	err = server.App.V1.HandleFunc(constants.HOMEURI, server.Home).Methods(http.MethodGet).GetError()
 	if err != nil {
 		return err
 	}
 
-	//**************** Balance Routes
-
-	// single request
 	err = server.App.V1.HandleFunc(constants.BALANCEURI, server.GetBalance).Methods(http.MethodGet).GetError()
 	if err != nil {
 		return err
 	}
 
-	//**************** TradeBalance Routes
-
-	// single request
 	err = server.App.V1.HandleFunc(constants.TRADEBALANCEURI, server.GetTradeBalance).Methods(http.MethodGet).GetError()
 	if err != nil {
 		return err
 	}
 
-	//**************** Ledger Routes
-
-	// single request
 	err = server.App.V1.HandleFunc(constants.LEDGERURI, server.GetLedger).Methods(http.MethodGet).GetError()
 	if err != nil {
 		return err

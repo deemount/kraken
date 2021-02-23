@@ -30,7 +30,7 @@ type TradeBalanceService struct {
 	useragent string
 	key       string
 	secret    string
-	//tradebalance *models.TradeBalance
+	// tradebalance *models.TradeBalance
 	response models.Response
 }
 
@@ -83,7 +83,7 @@ func (rs TradeBalanceService) GetTradeBalance(args map[string]string) (interface
 	}
 
 	// parse request
-	data := rs.response //rs.tradebalance
+	data := rs.response // rs.tradebalance
 
 	err = json.Unmarshal(body, &data.Result)
 	if err != nil {

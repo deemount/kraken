@@ -22,16 +22,14 @@ func TestSignature(t *testing.T) {
 
 	values := url.Values{}
 
-	urlPath := fmt.Sprintf("/0/private/Balance")
 	secretKey, _ := base64.StdEncoding.DecodeString(os.Getenv("API_KRAKEN_SECRET"))
 
 	// set nonce
 	nonce := fmt.Sprintf("%d", time.Now().UnixNano())
 	values.Set("nonce", nonce)
 
-	secret := []byte(secretKey)
 	shaSum := getSha256Test([]byte(values.Get("nonce") + values.Encode()))
-	macSum := getHMacSha512Test(append([]byte(urlPath), shaSum...), secret)
+	macSum := getHMacSha512Test(append([]byte("/0/private/Balance"), shaSum...), secretKey)
 	t.Logf("nonce: %s", nonce)
 	t.Logf("signature: %s", base64.StdEncoding.EncodeToString(macSum))
 }

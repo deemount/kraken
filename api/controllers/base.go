@@ -92,7 +92,7 @@ func (server *Server) Run() {
 
 	srv := &http.Server{
 		Addr:         ":" + server.App.API.Port,
-		Handler:      middlewares.Tracing(nextRequestID)(middlewares.Logging(logger)(middlewares.Limit(server.App.Router))), //handlers.LoggingHandler(os.Stdout, server.App.Router)
+		Handler:      middlewares.Tracing(nextRequestID)(middlewares.Logging(logger)(middlewares.Limit(server.App.Router))), // handlers.LoggingHandler(os.Stdout, server.App.Router)
 		ErrorLog:     logger,
 		BaseContext:  func(_ net.Listener) context.Context { return ctx },
 		ReadTimeout:  5 * time.Second,
