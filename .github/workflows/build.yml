@@ -24,15 +24,12 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      - name: Build
-        run: go build -v .
-
       - name: Test
         env:
           GOPROXY: "https://proxy.golang.org"
         run: go test -v .
 
-      - name: build and test
+      - name: Build And Test
         run: |
           go test -timeout=60s -race
           go build -race
@@ -40,4 +37,4 @@ jobs:
         run: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $GITHUB_WORKSPACE v1.26.0
 
       - name: run golangci-lint
-        run: $GITHUB_WORKSPACE/golangci-lint run --out-format=github-actions
+        run: $GITHUB_WORKSPACE/golangci-lint run --out-format=github-actions --print-issued-lines
