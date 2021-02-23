@@ -1,4 +1,5 @@
 linters:
+  disable-all: true
   enable:
     - megacheck
     - golint
@@ -24,7 +25,6 @@ linters:
     - gosimple
     - prealloc
   fast: false
-  disable-all: true
 
 issues:
   exclude-rules:
@@ -35,3 +35,6 @@ issues:
       linters:
         - gosec
   exclude-use-default: false
+
+output:
+  print-issued-lines: true

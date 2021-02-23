@@ -8,14 +8,14 @@ jobs:
     steps:
 
       # 
-      - name: Set up Go 1.15
+      - name: Set Up Go 1.15
         uses: actions/setup-go@v2
         with:
           go-version: ^1.15
         id: go
 
       # 
-      - name: Check out source code
+      - name: Check Source
         uses: actions/checkout@v2
 
       - name: Get dependencies
@@ -24,17 +24,15 @@ jobs:
         run: |
           go get -v -t -d ./...
 
-      - name: Test
+      - name: Build And Test
         env:
           GOPROXY: "https://proxy.golang.org"
-        run: go test -v .
-
-      - name: Build And Test
         run: |
-          go test -timeout=60s -race
+          go test -v -timeout=60s -race
           go build -race
-      - name: install golangci-lint
+
+      - name: Install Linter
         run: curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $GITHUB_WORKSPACE v1.26.0
 
-      - name: run golangci-lint
+      - name: Run Linter
         run: $GITHUB_WORKSPACE/golangci-lint run --print-issued-lines --out-format=github-actions 
