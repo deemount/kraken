@@ -6,7 +6,6 @@
 package utils
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -17,7 +16,7 @@ type Error struct {
 
 // Error is a method
 func (e *Error) Error() string {
-	return fmt.Sprintf("%s", strings.ToLower(e.Message))
+	return strings.ToLower(e.Message)
 }
 
 // APIErrors
